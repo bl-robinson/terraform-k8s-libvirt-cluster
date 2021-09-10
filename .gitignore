@@ -1,0 +1,5 @@
+*user-creds.auto.tfvars
+*.terraform
+*.terraform.lock.hcl
+.idea/
+*.DS_Store
