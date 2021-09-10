@@ -1,4 +1,4 @@
-*user-creds.auto.tfvars
+*creds.auto.tfvars
 *.terraform
 *.terraform.lock.hcl
 .idea/
