@@ -28,10 +28,6 @@ resource "libvirt_domain" "domain-debian" {
   cloudinit = libvirt_cloudinit_disk.commoninit.id
 
   network_interface {
-    network_name = "default"
-  }
-
-  network_interface {
     macvtap = "bond0"
   }
 
