@@ -7,7 +7,7 @@ terraform {
 }
 
 provider "libvirt" {
-  uri = "qemu+ssh://root@10.0.0.4/system?keyfile=/home/benr/.ssh/kvm"
+  uri = "qemu+ssh://root@${var.hypervisor_ip}/system?keyfile=${var.ssh_keyfile_path}"
 }
 
 resource "libvirt_pool" "k8s" {

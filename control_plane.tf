@@ -6,6 +6,9 @@ resource "libvirt_volume" "control_plane" {
 
 data "template_file" "user_data_control" {
   template = file("${path.module}/configs/control_plane/cloud_init.cfg")
+  vars = {
+    nfs_server_ip = var.nfs_server_ip
+  }
 }
 
 data "template_file" "network_config_control" {
