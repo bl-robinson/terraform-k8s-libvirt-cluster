@@ -9,7 +9,7 @@ data "template_file" "user_data_worker" {
   count = var.worker_count
   template = file("${path.module}/configs/workers/cloud_init.cfg")
   vars = {
-    count = count.index
+    count = count.index + 1
     worker_count = var.worker_count
   }
 }
@@ -18,7 +18,7 @@ data "template_file" "network_config_worker" {
   count = var.worker_count
   template = file("${path.module}/configs/workers/network_config.cfg")
   vars = {
-    count = count.index
+    count = count.index + 1
   }
 }
 
