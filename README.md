@@ -7,3 +7,7 @@ Relys on a few things.
 - ssh access to the kvm host with a key as specified in main.tf
 
 Terraform apply will just start the instances then the startup cloudinit handles the order of setup to get k8s working
+
+
+Note kubeconfig files are avaliable in the 10.0.0.14:/mnt/k8s mount.
+
