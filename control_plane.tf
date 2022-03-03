@@ -1,7 +1,7 @@
 resource "libvirt_volume" "control_plane" {
   name           = "control_plane"
   base_volume_id = libvirt_volume.root_cloudinit.id
-  size           = 5368709120
+  size           = 10737418240
 }
 
 data "template_file" "user_data_control" {
