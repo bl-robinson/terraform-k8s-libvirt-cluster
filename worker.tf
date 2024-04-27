@@ -36,7 +36,7 @@ resource "libvirt_cloudinit_disk" "commoninit-worker" {
 # Create the machine
 resource "libvirt_domain" "domain-debian-worker" {
   count  = var.worker_count
-  name   = "k8s-worker-${count.index}"
+  name   = "k8s-worker-${count.index + 1}"
   memory = "2048"
   vcpu   = 2
 
