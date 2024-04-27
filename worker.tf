@@ -43,7 +43,7 @@ resource "libvirt_domain" "domain-debian-worker" {
   cloudinit = libvirt_cloudinit_disk.commoninit-worker[count.index].id
 
   network_interface {
-    macvtap = "bond0"
+    macvtap = "enp4s0"
   }
 
   console {

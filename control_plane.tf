@@ -34,7 +34,7 @@ resource "libvirt_domain" "domain-control" {
   cloudinit = libvirt_cloudinit_disk.control_init.id
 
   network_interface {
-    macvtap = "bond0"
+    macvtap = "enp4s0"
   }
 
   console {
