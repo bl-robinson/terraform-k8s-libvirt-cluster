@@ -18,5 +18,5 @@ resource "libvirt_pool" "k8s" {
 
 resource "libvirt_volume" "root_cloudinit" {
   name   = "debian-qcow2"
-  source = "http://cloud.debian.org/images/cloud/bullseye/20210814-734/debian-11-generic-amd64-20210814-734.qcow2"
+  source = "https://cloud.debian.org/images/cloud/bookworm/latest/debian-12-genericcloud-amd64.qcow2"
 }
