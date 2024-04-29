@@ -2,7 +2,7 @@ resource "libvirt_volume" "worker" {
   count          = var.worker_count
   name           = "worker-${count.index}"
   base_volume_id = libvirt_volume.root_cloudinit.id
-  size           = 21474836480
+  size           = 21474836480 # Size in Bytes (20G)
 }
 
 data "template_file" "user_data_worker" {
