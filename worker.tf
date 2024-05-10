@@ -46,6 +46,10 @@ resource "libvirt_domain" "domain-debian-worker" {
     macvtap = "enp4s0"
   }
 
+  cpu = {
+    mode = "host-passthrough"
+  }
+
   console {
     type        = "pty"
     target_port = "0"
