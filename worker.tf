@@ -37,7 +37,7 @@ resource "libvirt_cloudinit_disk" "commoninit-worker" {
 resource "libvirt_domain" "domain-debian-worker" {
   count  = var.worker_count
   name   = "k8s-worker-${count.index + 1}"
-  memory = "2048"
+  memory = "4096"
   vcpu   = 2
 
   cloudinit = libvirt_cloudinit_disk.commoninit-worker[count.index].id
