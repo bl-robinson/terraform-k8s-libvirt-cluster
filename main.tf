@@ -13,7 +13,7 @@ provider "libvirt" {
 resource "libvirt_pool" "k8s" {
   name = "k8s"
   type = "dir"
-  path = "/tmp/k8s-pool"
+  path = "/var/lib/k8s-pool"
 }
 
 resource "libvirt_volume" "root_cloudinit" {
