@@ -71,4 +71,5 @@ resource "libvirt_domain" "domain-debian-worker" {
     listen_type = "address"
     autoport    = true
   }
+  autostart = true
 }

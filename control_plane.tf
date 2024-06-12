@@ -62,4 +62,6 @@ resource "libvirt_domain" "domain-control" {
     listen_type = "address"
     autoport    = true
   }
+
+  autostart = true
 }
