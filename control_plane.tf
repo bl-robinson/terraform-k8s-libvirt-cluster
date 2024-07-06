@@ -29,7 +29,7 @@ resource "libvirt_cloudinit_disk" "control_init" {
 resource "libvirt_domain" "domain-control" {
   name   = "k8s-control-plane"
   memory = "2048"
-  vcpu   = 2
+  vcpu   = 4
 
   cloudinit = libvirt_cloudinit_disk.control_init.id
 
