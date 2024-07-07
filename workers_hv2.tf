@@ -1,6 +1,7 @@
 resource "libvirt_volume" "worker_hv2" {
   for_each       = local.hv2_workers
-  provider = libvirt.hv2
+  provider       = libvirt.hv2
+  pool           = libvirt_pool.k8s_hv2.name
   name           = each.key
   base_volume_id = libvirt_volume.root_cloudinit_hv2.id
   size           = 21474836480 # Size in Bytes (20G)
@@ -27,11 +28,11 @@ data "template_file" "network_config_worker_hv2" {
 
 resource "libvirt_cloudinit_disk" "commoninit-worker_hv2" {
   for_each       = local.hv2_workers
-  provider = libvirt.hv2
+  provider       = libvirt.hv2
   name           = "commoninit-worker-${each.key}.iso"
   user_data      = data.template_file.user_data_worker_hv2[each.key].rendered
   network_config = data.template_file.network_config_worker_hv2[each.key].rendered
-  pool           = libvirt_pool.k8s_hv1.name
+  pool           = libvirt_pool.k8s_hv2.name
 }
 
 # Create the machine

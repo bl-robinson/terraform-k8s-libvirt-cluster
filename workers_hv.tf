@@ -3,6 +3,7 @@ resource "libvirt_volume" "worker" {
   name           = each.key
   base_volume_id = libvirt_volume.root_cloudinit_hv1.id
   size           = 21474836480 # Size in Bytes (20G)
+  pool           = libvirt_pool.k8s_hv1.name
 }
 
 data "template_file" "user_data_worker" {
