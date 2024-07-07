@@ -1,6 +1,6 @@
 resource "libvirt_volume" "control_plane" {
   name           = "control_plane"
-  base_volume_id = libvirt_volume.root_cloudinit.id
+  base_volume_id = libvirt_volume.root_cloudinit_hv1.id
   size           = 10737418240
 }
 
@@ -22,14 +22,14 @@ resource "libvirt_cloudinit_disk" "control_init" {
   name           = "commoninit.iso"
   user_data      = data.template_file.user_data_control.rendered
   network_config = data.template_file.network_config_control.rendered
-  pool           = libvirt_pool.k8s.name
+  pool           = libvirt_pool.k8s_hv1.name
 }
 
 # Create the machine
 resource "libvirt_domain" "domain-control" {
-  name   = "k8s-control-plane"
-  memory = "2048"
-  vcpu   = 4
+  name     = "k8s-control-plane"
+  memory   = "4096"
+  vcpu     = 4
 
   cloudinit = libvirt_cloudinit_disk.control_init.id
 

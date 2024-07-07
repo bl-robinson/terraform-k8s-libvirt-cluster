@@ -1,7 +1,7 @@
 resource "libvirt_volume" "worker" {
   count          = var.worker_count
   name           = "worker-${count.index}"
-  base_volume_id = libvirt_volume.root_cloudinit.id
+  base_volume_id = libvirt_volume.root_cloudinit_hv1.id
   size           = 21474836480 # Size in Bytes (20G)
 }
 
@@ -30,15 +30,15 @@ resource "libvirt_cloudinit_disk" "commoninit-worker" {
   name           = "commoninit-worker-${count.index}.iso"
   user_data      = data.template_file.user_data_worker[count.index].rendered
   network_config = data.template_file.network_config_worker[count.index].rendered
-  pool           = libvirt_pool.k8s.name
+  pool           = libvirt_pool.k8s_hv1.name
 }
 
 # Create the machine
 resource "libvirt_domain" "domain-debian-worker" {
-  count  = var.worker_count
-  name   = "k8s-worker-${count.index + 1}"
-  memory = "4096"
-  vcpu   = 2
+  count    = var.worker_count
+  name     = "k8s-worker-${count.index + 1}"
+  memory   = "4096"
+  vcpu     = 2
 
   cloudinit = libvirt_cloudinit_disk.commoninit-worker[count.index].id
 

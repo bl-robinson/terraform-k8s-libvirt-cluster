@@ -22,6 +22,10 @@ variable "hypervisor_ip" {
   type = string
 }
 
+variable "hypervisor2_ip" {
+  type = string
+}
+
 variable "ssh_keyfile_path" {
   type = string
 }
