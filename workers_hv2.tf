@@ -1,12 +1,13 @@
-resource "libvirt_volume" "worker" {
-  for_each       = local.hv1_workers
+resource "libvirt_volume" "worker_hv2" {
+  for_each       = local.hv2_workers
+  provider = libvirt.hv2
   name           = each.key
-  base_volume_id = libvirt_volume.root_cloudinit_hv1.id
+  base_volume_id = libvirt_volume.root_cloudinit_hv2.id
   size           = 21474836480 # Size in Bytes (20G)
 }
 
-data "template_file" "user_data_worker" {
-  for_each = local.hv1_workers
+data "template_file" "user_data_worker_hv2" {
+  for_each = local.hv2_workers
   template = file("${path.module}/configs/workers/cloud_init.cfg")
   vars = {
     name          = each.key
@@ -15,8 +16,8 @@ data "template_file" "user_data_worker" {
   }
 }
 
-data "template_file" "network_config_worker" {
-  for_each = local.hv1_workers
+data "template_file" "network_config_worker_hv2" {
+  for_each = local.hv2_workers
   template = file("${path.module}/configs/workers/network_config.cfg")
   vars = {
     ip     = each.value.ip
@@ -24,25 +25,27 @@ data "template_file" "network_config_worker" {
   }
 }
 
-resource "libvirt_cloudinit_disk" "commoninit-worker" {
-  for_each       = local.hv1_workers
+resource "libvirt_cloudinit_disk" "commoninit-worker_hv2" {
+  for_each       = local.hv2_workers
+  provider = libvirt.hv2
   name           = "commoninit-worker-${each.key}.iso"
-  user_data      = data.template_file.user_data_worker[each.key].rendered
-  network_config = data.template_file.network_config_worker[each.key].rendered
+  user_data      = data.template_file.user_data_worker_hv2[each.key].rendered
+  network_config = data.template_file.network_config_worker_hv2[each.key].rendered
   pool           = libvirt_pool.k8s_hv1.name
 }
 
 # Create the machine
-resource "libvirt_domain" "domain-debian-worker" {
-  for_each = local.hv1_workers
+resource "libvirt_domain" "domain-debian-worker_hv2" {
+  for_each = local.hv2_workers
+  provider = libvirt.hv2
   name     = each.key
   memory   = each.value.memory
   vcpu     = 2
 
-  cloudinit = libvirt_cloudinit_disk.commoninit-worker[each.key].id
+  cloudinit = libvirt_cloudinit_disk.commoninit-worker_hv2[each.key].id
 
   network_interface {
-    macvtap = "enp4s0"
+    macvtap = "enp0s25"
   }
 
   cpu = {
@@ -62,7 +65,7 @@ resource "libvirt_domain" "domain-debian-worker" {
   }
 
   disk {
-    volume_id = libvirt_volume.worker[each.key].id
+    volume_id = libvirt_volume.worker_hv2[each.key].id
   }
 
   graphics {

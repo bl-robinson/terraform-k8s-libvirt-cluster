@@ -15,6 +15,7 @@ data "template_file" "network_config_control" {
   template = file("${path.module}/configs/control_plane/network_config.cfg")
   vars = {
     ip_addr = var.control_node_ip
+    node_subnet = var.node_subnet_range
   }
 }
 

@@ -6,7 +6,7 @@ variable "control_node_ip" {
   type = string
 }
 
-variable "worker_node_subnet_range" {
+variable "node_subnet_range" {
   type = string
 }
 

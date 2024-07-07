@@ -8,12 +8,12 @@ terraform {
 }
 
 provider "libvirt" {
-  uri = "qemu+ssh://benr@${var.hypervisor_ip}/system?keyfile=${var.ssh_keyfile_path}"
+  uri = "qemu+ssh://benr@${var.hypervisor_ip}/system?sshauth=privkey&keyfile=${var.ssh_keyfile_path}"
 }
 
 provider "libvirt" {
   alias = "hv2"
-  uri   = "qemu+ssh://benr@${var.hypervisor2_ip}/system?keyfile=${var.ssh_keyfile_path}"
+  uri   = "qemu+ssh://benr@${var.hypervisor2_ip}/system?sshauth=privkey&keyfile=${var.ssh_keyfile_path}"
 }
 
 resource "libvirt_pool" "k8s_hv1" {
