@@ -1,7 +1,7 @@
 locals {
   hv1_workers = {
-    k8s-worker-1 = { ip = "10.0.0.21", memory = "3636" }
-    k8s-worker-2 = { ip = "10.0.0.22", memory = "3636" }
+    k8s-worker-1 = { ip = "10.0.0.21", memory = "3379" }
+    k8s-worker-2 = { ip = "10.0.0.22", memory = "3379" }
   }
   hv2_workers = {
     k8s-worker-3 = { ip = "10.0.0.23", memory = "7372" }
