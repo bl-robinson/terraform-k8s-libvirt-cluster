@@ -49,7 +49,7 @@ resource "libvirt_domain" "domain-debian-worker_hv2" {
     macvtap = "enp0s25"
   }
 
-  cpu = {
+  cpu {
     mode = "host-passthrough"
   }
 

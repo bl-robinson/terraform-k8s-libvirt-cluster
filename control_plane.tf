@@ -38,7 +38,7 @@ resource "libvirt_domain" "domain-control" {
     macvtap = "enp4s0"
   }
 
-  cpu = {
+  cpu {
     mode = "host-passthrough"
   }
 
