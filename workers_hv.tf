@@ -38,7 +38,7 @@ resource "libvirt_domain" "domain-debian-worker" {
   for_each = local.hv1_workers
   name     = each.key
   memory   = each.value.memory
-  vcpu     = 2
+  vcpu     = 7
 
   cloudinit = libvirt_cloudinit_disk.commoninit-worker[each.key].id
 

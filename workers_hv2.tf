@@ -46,7 +46,7 @@ resource "libvirt_domain" "domain-debian-worker_hv2" {
   cloudinit = libvirt_cloudinit_disk.commoninit-worker_hv2[each.key].id
 
   network_interface {
-    macvtap = "enp0s25"
+    macvtap = "enx00e04c6806c5"
   }
 
   cpu {
