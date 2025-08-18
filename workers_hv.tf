@@ -22,6 +22,7 @@ data "template_file" "network_config_worker" {
   vars = {
     ip     = each.value.ip
     subnet = var.node_subnet_range
+    ip6    = each.value.ip6
   }
 }
 
