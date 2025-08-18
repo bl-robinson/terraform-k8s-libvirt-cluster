@@ -15,6 +15,7 @@ data "template_file" "network_config_control" {
   template = file("${path.module}/configs/control_plane/network_config.cfg")
   vars = {
     ip_addr = var.control_node_ip
+    ip6_addr = var.control_node_ip6
     node_subnet = var.node_subnet_range
   }
 }
@@ -30,7 +31,7 @@ resource "libvirt_cloudinit_disk" "control_init" {
 resource "libvirt_domain" "domain-control" {
   name   = "k8s-control-plane"
   memory = "4096"
-  vcpu   = 1
+  vcpu   = 2
 
   cloudinit = libvirt_cloudinit_disk.control_init.id
 
