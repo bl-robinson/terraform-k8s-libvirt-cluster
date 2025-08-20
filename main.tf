@@ -29,13 +29,17 @@ resource "libvirt_pool" "k8s_hv2" {
   path     = "/var/lib/k8s-pool"
 }
 
+locals {
+  debian_image_source = "https://cloud.debian.org/images/cloud/bookworm/latest/debian-12-genericcloud-amd64.qcow2"
+}
+
 resource "libvirt_volume" "root_cloudinit_hv1" {
   name   = "debian-qcow2"
-  source = "https://cloud.debian.org/images/cloud/bookworm/latest/debian-12-genericcloud-amd64.qcow2"
+  source = local.debian_image_source
 }
 
 resource "libvirt_volume" "root_cloudinit_hv2" {
   provider = libvirt.hv2
   name     = "debian-qcow2"
-  source   = "https://cloud.debian.org/images/cloud/bookworm/latest/debian-12-genericcloud-amd64.qcow2"
+  source   = local.debian_image_source
 }

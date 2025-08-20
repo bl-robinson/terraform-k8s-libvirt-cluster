@@ -21,9 +21,9 @@ data "template_file" "network_config_worker_hv2" {
   for_each = local.hv2_workers
   template = file("${path.module}/configs/workers/network_config.cfg")
   vars = {
-    ip     = each.value.ip
-    subnet = var.node_subnet_range
-    ip6    = each.value.ip6
+    ip_addr     = each.value.ip
+    node_subnet      = var.node_subnet_range
+    ip6_addr    = each.value.ip6
   }
 }
 
