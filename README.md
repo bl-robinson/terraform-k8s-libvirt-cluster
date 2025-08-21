@@ -11,3 +11,16 @@ Terraform apply will just start the instances then the startup cloudinit handles
 
 Note kubeconfig files are avaliable in the 10.0.0.14:/mnt/k8s mount.
 
+# Notes RE IPv6 on the home network
+
+My Range ->2a06:61c2:27ae/48
+
+Main network Range 2a06:61c2:27ae:: /64
+  Assigned DCHP -> 2001:db8::/112
+  Assigned Static Allocations -> 2001:db8::1:0/112
+  Assigned Pod Network -> 2001:db8::2:0/112
+  Assigned Service Network -> 2001:db8::3:0/112
+
+Work network Range 2a06:61c2:27ae:1:: /64
+  Assigned via SLAAC
+
