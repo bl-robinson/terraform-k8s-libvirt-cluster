@@ -21,6 +21,8 @@ Main network Range 2a06:61c2:27ae:: /64
   Assigned Pod Network -> 2001:db8::2:0/112
   Assigned Service Network -> 2001:db8::3:0/112
 
+SLAAC is permitted in this range in order to allow for Android devices connected to the main network.
+  - But practically changes of collisions are low and we can rely on IPv6 to detect and SLAAC to handle. (I think)
+
 Work network Range 2a06:61c2:27ae:1:: /64
   Assigned via SLAAC
-
