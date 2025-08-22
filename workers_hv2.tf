@@ -14,6 +14,8 @@ data "template_file" "user_data_worker_hv2" {
     name          = each.key
     worker_count  = local.total_worker_count
     nfs_server_ip = var.nfs_server_ip
+    ip_addr     = each.value.ip
+    ip6_addr    = each.value.ip6
   }
 }
 
