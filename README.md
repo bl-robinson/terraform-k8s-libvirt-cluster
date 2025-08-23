@@ -11,6 +11,15 @@ Terraform apply will just start the instances then the startup cloudinit handles
 
 Note kubeconfig files are avaliable in the 10.0.0.14:/mnt/k8s mount.
 
+# Notes RE IPv4 on the home network
+
+10.0.0.0/23 -> Main "default" network range
+            DCHP is 10.0.1.1 -> 10.0.1.255
+            Statically allocated all below that.
+
+10.0.255.1/24 -> 'Work' Network isolated all DHCP
+
+
 # Notes RE IPv6 on the home network
 
 My Range ->2a06:61c2:27ae/48
