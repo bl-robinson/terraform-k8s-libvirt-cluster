@@ -1,3 +1,10 @@
+locals {
+  hv1_workers = {
+    k8s-worker-1 = { ip = "10.0.0.21", ip6 = "2a06:61c2:27ae::1:0007", memory = "12288" }
+    k8s-worker-2 = { ip = "10.0.0.22", ip6 = "2a06:61c2:27ae::1:0008", memory = "12288" }
+  }
+}
+
 resource "libvirt_volume" "worker" {
   for_each       = local.hv1_workers
   name           = each.key

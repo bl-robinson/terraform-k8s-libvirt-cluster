@@ -7,6 +7,7 @@ node_subnet_range = "23"
 nfs_server_ip = "10.0.0.3"
 
 hypervisor_ip  = "10.0.0.5"
-hypervisor2_ip = "10.0.0.19"
+hypervisor2_ip   = "10.0.0.19"
+hypervisor_rack_ip = "10.0.0.7"
 
 ssh_keyfile_path = "/home/benr/.ssh/kvm"

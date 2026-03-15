@@ -1,3 +1,32 @@
+variable "hypervisor2_ip" {
+  type = string
+}
+
+provider "libvirt" {
+  alias = "hv2"
+  uri   = "qemu+ssh://benr@${var.hypervisor2_ip}/system?sshauth=privkey&keyfile=${var.ssh_keyfile_path}"
+}
+
+resource "libvirt_pool" "k8s_hv2" {
+  provider = libvirt.hv2
+  name     = "k8s"
+  type     = "dir"
+  path     = "/var/lib/k8s-pool"
+}
+
+resource "libvirt_volume" "root_cloudinit_hv2" {
+  provider = libvirt.hv2
+  name     = "debian-qcow2"
+  source   = local.debian_image_source
+}
+
+locals {
+  hv2_workers = {
+    k8s-worker-3 = { ip = "10.0.0.23", ip6 = "2a06:61c2:27ae::1:0009", memory = "7168" }
+    k8s-worker-4 = { ip = "10.0.0.24", ip6 = "2a06:61c2:27ae::1:000A", memory = "7168" }
+  }
+}
+
 resource "libvirt_volume" "worker_hv2" {
   for_each       = local.hv2_workers
   provider       = libvirt.hv2
