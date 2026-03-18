@@ -8,8 +8,70 @@ Relys on a few things.
 
 Terraform apply will just start the instances then the startup cloudinit handles the order of setup to get k8s working
 
-
 Note kubeconfig files are avaliable in the 10.0.0.14:/mnt/k8s mount.
+
+# BGP and MetalLB
+
+MetalLB runs in BGP mode, peering with the UniFi Cloud Gateway (UCG) at 10.0.0.1. The gateway runs FRR and the config is stored in `unifi-config/bgp.conf`.
+
+- Gateway ASN: 65000
+- Cluster ASN: 65001
+- Each k8s node runs a MetalLB speaker that peers with the gateway
+
+## Adding a new worker node
+
+When adding a new worker node to the cluster, you **must** also add it as a BGP neighbor on the gateway. Otherwise any LoadBalancer services with `externalTrafficPolicy: Local` running on that node will be unreachable ("no route to host").
+
+1. Update `unifi-config/bgp.conf` — add the new node's IP (10.0.0.2X) in three places:
+   - As a neighbor under `router bgp 65000` (with remote-as, description, route-map)
+   - Activated under `address-family ipv4 unicast`
+   - Activated under `address-family ipv6 unicast` (with route-map)
+2. Upload the config to the UCG:
+   - UniFi Network UI > Settings > Routing > BGP, paste the config
+   - This will briefly reset all BGP sessions while the config is applied
+3. Verify from the gateway: `ssh root@10.0.0.1` then `vtysh -c "show bgp summary"` — all neighbors should show as Established
+
+## SSH to the UCG
+
+SSH credentials for the gateway are set separately from the Device SSH Authentication settings:
+- Username: `root`
+- Password: set via the UniFi OS console at `https://10.0.0.1` (not the Network app's Device SSH settings)
+
+## Debugging BGP issues
+
+If a LoadBalancer service is unreachable ("no route to host" or "connection refused"):
+
+1. Check which node the target pod is running on:
+   ```
+   kubectl get pods -n <namespace> -o wide
+   ```
+
+2. Check if the MetalLB speaker on that node has an established BGP session:
+   ```
+   kubectl exec -n metallb-system <speaker-pod> -c frr -- vtysh -c "show bgp summary"
+   ```
+   Look for `Established` state and non-zero `PfxSnt`. If the state is `Active` with `Up/Down: never`, the gateway is rejecting the connection — the node is likely missing from the gateway's BGP config.
+
+3. Check what routes the speaker is advertising:
+   ```
+   kubectl exec -n metallb-system <speaker-pod> -c frr -- vtysh -c "show ip bgp neighbors 10.0.0.1 advertised-routes"
+   ```
+
+4. Check the speaker logs for errors:
+   ```
+   kubectl logs -n metallb-system <speaker-pod> -c frr --tail=50
+   ```
+   Repeated `bgp_read_packet error: Connection reset by peer` means the gateway is refusing the connection.
+
+5. Verify from the gateway side:
+   ```
+   ssh root@10.0.0.1
+   vtysh -c "show bgp summary"
+   ```
+
+## Note on externalTrafficPolicy
+
+Services with `externalTrafficPolicy: Local` will **only** be advertised from the node running the pod. If that node's BGP session is down, the service is completely unreachable. Services with `externalTrafficPolicy: Cluster` are advertised from all nodes but lose source IP preservation.
 
 # Notes RE IPv4 on the home network
 

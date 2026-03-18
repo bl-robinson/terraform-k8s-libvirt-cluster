@@ -9,7 +9,7 @@ resource "libvirt_volume" "worker" {
   for_each       = local.hv1_workers
   name           = each.key
   base_volume_id = libvirt_volume.root_cloudinit_hv1.id
-  size           = 21474836480 # Size in Bytes (20G)
+  size           = 53687091200 # Size in Bytes (50G)
   pool           = libvirt_pool.k8s_hv1.name
 }
 

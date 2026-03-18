@@ -33,7 +33,7 @@ resource "libvirt_volume" "worker_hv2" {
   pool           = libvirt_pool.k8s_hv2.name
   name           = each.key
   base_volume_id = libvirt_volume.root_cloudinit_hv2.id
-  size           = 21474836480 # Size in Bytes (20G)
+  size           = 53687091200 # Size in Bytes (50G)
 }
 
 data "template_file" "user_data_worker_hv2" {
